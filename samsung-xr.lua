@@ -58,7 +58,7 @@ allowed = function(url, parenturl)
     return true
   end
 
-  for s in string.gmatch(url, "([a-zA-Z0-9]+)") do
+  for s in string.gmatch(url, "([a-zA-Z0-9_]+)") do
     if s == item_value then
       return true
     end
