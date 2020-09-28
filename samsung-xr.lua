@@ -153,7 +153,8 @@ wget.callbacks.get_urls = function(file, url, is_css, iri)
   end
 
   if allowed(url, nil) and status_code == 200
-    and not string.match(url, "^https?://[^/]*cloudfront%.net/") then
+    and not string.match(url, "^https?://[^/]*cloudfront%.net/")
+    and not string.match(url, "^https?://samsungvr%.com/video%-hls/[^%.]+%.ts") then
     html = read_file(file)
     if url == "https://samsungvr.com/view/" .. item_value then
       graphql_request({
