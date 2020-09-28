@@ -205,6 +205,13 @@ wget.callbacks.get_urls = function(file, url, is_css, iri)
   return urls
 end
 
+wget.callbacks.write_to_warc = function(url, http_stat)
+  if http_stat["statcode"] ~= 200 and http_stat["statcode"] ~= 302 then
+    return false
+  end
+  return true
+end
+
 wget.callbacks.httploop_result = function(url, err, http_stat)
   status_code = http_stat["statcode"]
   
@@ -231,12 +238,7 @@ wget.callbacks.httploop_result = function(url, err, http_stat)
     return wget.actions.ABORT
   end
 
-  if status_code >= 500
-    or (
-      status_code >= 400
-      and status_code ~= 404
-    )
-    or status_code == 0 then
+  if status_code ~= 200 and status_code ~= 302 then
     io.stdout:write("Server returned " .. http_stat.statcode .. " (" .. err .. "). Sleeping.\n")
     io.stdout:flush()
     local maxtries = 12
